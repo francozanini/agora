@@ -191,7 +191,16 @@ const Home: NextPage = () => {
               <span className="mx-auto self-center">Category One</span>
               <Accordion.Trigger>-</Accordion.Trigger>
             </Accordion.Header>
-            <Accordion.Content>Content</Accordion.Content>
+            <Accordion.Content className="bg-[#ffffff1a] p-1">
+              <div className="mb-0.5 w-full bg-gray-900 p-4">Content</div>
+              <div className="mb-0.5 w-full bg-gray-900 p-4">Content</div>
+              <div className="mb-0.5 w-full bg-gray-900 p-4">Content</div>
+              <div className="mb-0.5 w-full bg-gray-900 p-4">Content</div>
+              <div className="mb-0.5 w-full bg-gray-900 p-4">Content</div>
+              <div className="mb-0.5 w-full bg-gray-900 p-4">Content</div>
+              <div className="mb-0.5 w-full bg-gray-900 p-4">Content</div>
+              <div className="mb-0.5 w-full bg-gray-900 p-4">Content</div>
+            </Accordion.Content>
           </Accordion.Item>
         </Accordion.Root>
       </Layout>
