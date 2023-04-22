@@ -176,7 +176,54 @@ function Layout({children}: {children: ComponentChildren}) {
   );
 }
 
+type Category = {
+  title: string;
+  subcategories: Subcategory[];
+};
+
+type Subcategory = {
+  title: string;
+  description: string;
+  threadsAmount: number;
+  postsAmount: number;
+  hasUnreadPosts: boolean;
+  subforums?: {title: string}[];
+};
+
 const Home: NextPage = () => {
+  const categories: Category[] = [
+    {
+      title: 'General',
+      subcategories: [
+        {
+          title: 'Rules and Systems',
+          description:
+            'This forum contains rules and explanations for our systems',
+          threadsAmount: 7,
+          postsAmount: 22,
+          hasUnreadPosts: false
+        },
+        {
+          title: 'Doubts and Suggestions',
+          description:
+            'Whatever doubt or suggestion you have, please contact Ozkr',
+          threadsAmount: 7,
+          postsAmount: 22,
+          hasUnreadPosts: true,
+          subforums: [{title: 'doubts'}, {title: 'complaints'}]
+        },
+        {
+          title: 'Offtopic',
+          description:
+            'This forum contains rules and explanations for our systems',
+          threadsAmount: 7,
+          postsAmount: 22,
+          hasUnreadPosts: true
+        }
+      ]
+    }
+  ];
+
   return (
     <>
       <Head>
@@ -185,28 +232,68 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <Accordion.Root type="single" defaultValue="item-1" collapsible>
-          <Accordion.Item value="category">
-            <Accordion.Header className="text-md flex h-12 w-full flex-row bg-gray-900 px-4">
-              <span className="mx-auto self-center">Category One</span>
-              <Accordion.Trigger>-</Accordion.Trigger>
-            </Accordion.Header>
-            <Accordion.Content className="bg-[#ffffff1a] p-1">
-              <div className="mb-0.5 w-full bg-gray-900 p-4">Content</div>
-              <div className="mb-0.5 w-full bg-gray-900 p-4">Content</div>
-              <div className="mb-0.5 w-full bg-gray-900 p-4">Content</div>
-              <div className="mb-0.5 w-full bg-gray-900 p-4">Content</div>
-              <div className="mb-0.5 w-full bg-gray-900 p-4">Content</div>
-              <div className="mb-0.5 w-full bg-gray-900 p-4">Content</div>
-              <div className="mb-0.5 w-full bg-gray-900 p-4">Content</div>
-              <div className="mb-0.5 w-full bg-gray-900 p-4">Content</div>
-            </Accordion.Content>
-          </Accordion.Item>
-        </Accordion.Root>
+        {categories.map(category => (
+          <Category key={category.title} category={category}></Category>
+        ))}
       </Layout>
     </>
   );
 };
+
+function Category({category}: {category: Category}) {
+  return (
+    <Accordion.Root type="single" defaultValue="category" collapsible>
+      <Accordion.Item value="category">
+        <Accordion.Header className="text-md flex h-12 w-full flex-row bg-gray-900 px-4">
+          <span className="mx-auto self-center text-xl font-bold">
+            {category.title}
+          </span>
+          <Accordion.Trigger>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              className="h-5 w-5">
+              <path
+                fillRule="evenodd"
+                d="M4 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H4.75A.75.75 0 014 10z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </Accordion.Trigger>
+        </Accordion.Header>
+        <Accordion.Content className="bg-[#ffffff1a] p-1">
+          {category.subcategories.map(subcategory => (
+            <div
+              key={subcategory.title}
+              className="mb-0.5 w-full bg-gray-900 p-4">
+              <Link
+                href={`/subcategory/${subcategory.title}`}
+                className="text-xl font-semibold">
+                {subcategory.title}
+              </Link>
+              <p className="text-md">{subcategory.description}</p>
+              <ul className="flex flex-row gap-2">
+                <li className="text-xs">
+                  Threads:{' '}
+                  <span className=" font-semibold">
+                    {subcategory.threadsAmount}
+                  </span>
+                </li>
+                <li className="text-xs">
+                  Posts:{' '}
+                  <span className=" font-semibold">
+                    {subcategory.postsAmount}
+                  </span>
+                </li>
+              </ul>
+            </div>
+          ))}
+        </Accordion.Content>
+      </Accordion.Item>
+    </Accordion.Root>
+  );
+}
 
 export default Home;
 
