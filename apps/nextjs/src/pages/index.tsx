@@ -4,66 +4,18 @@ import Link from 'next/link';
 import * as Accordion from '@radix-ui/react-accordion';
 import React from 'react';
 import Layout from '../components/layout';
+import {RouterOutputs, trpc} from '../utils/trpc';
 export type ComponentChildren = string | JSX.Element | JSX.Element[];
 
-type Category = {
-  title: string;
-  subcategories: Subcategory[];
-};
-
-type Subcategory = {
-  title: string;
-  description: string;
-  threadsAmount: number;
-  postsAmount: number;
-  hasUnreadPosts: boolean;
-  subforums?: {title: string}[];
-};
-
 const Home: NextPage = () => {
-  const categories: Category[] = [
-    {
-      title: 'General',
-      subcategories: [
-        {
-          title: 'Rules and Systems',
-          description:
-            'This forum contains rules and explanations for our systems',
-          threadsAmount: 7,
-          postsAmount: 22,
-          hasUnreadPosts: false
-        },
-        {
-          title: 'Doubts and Suggestions',
-          description:
-            'Whatever doubt or suggestion you have, please contact Ozkr',
-          threadsAmount: 7,
-          postsAmount: 22,
-          hasUnreadPosts: true,
-          subforums: [{title: 'doubts'}, {title: 'complaints'}]
-        },
-        {
-          title: 'Offtopic',
-          description: 'Come and vote for the next Pelotud@ of the Month!',
-          threadsAmount: 7,
-          postsAmount: 22,
-          hasUnreadPosts: true
-        }
-      ]
-    },
-    {
-      title: 'Another Category',
-      subcategories: [
-        {
-          title: 'Lorem ipsum',
-          hasUnreadPosts: true,
-          description: 'Suculento rufian',
-          postsAmount: 0,
-          threadsAmount: 0
-        }
-      ]
-    }
-  ];
+  const {
+    data: categories,
+    isLoading,
+    isError
+  } = trpc.categories.forCurrentUser.useQuery();
+
+  if (isLoading) return <div>...Loading</div>;
+  if (isError) return <div>Oh shit</div>;
 
   return (
     <>
@@ -88,7 +40,7 @@ function Category({
   category,
   className = ''
 }: {
-  category: Category;
+  category: RouterOutputs['categories']['forCurrentUser'][number];
   className?: string;
 }) {
   return (
@@ -100,7 +52,7 @@ function Category({
       <Accordion.Item value="category">
         <Accordion.Header className="text-md flex h-12 w-full flex-row bg-gray-900 px-4">
           <Link
-            href={`/category/${category.title}`}
+            href={`/category/${category.href}`}
             className="mx-auto self-center text-xl font-bold">
             {category.title}
           </Link>

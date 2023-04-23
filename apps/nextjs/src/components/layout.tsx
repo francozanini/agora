@@ -108,6 +108,11 @@ function Navbar() {
   );
 }
 
+function capitalized(text: string) {
+  if (!text[0]) return '';
+  return text[0].toUpperCase() + text.slice(1);
+}
+
 function Breadcrumbs() {
   const router = useRouter();
 
@@ -162,10 +167,27 @@ function Breadcrumbs() {
                 </svg>
               </span>
             ) : null}
-            <Link href={crumb.href} className="inline-block align-middle">
-              {crumb.text}
+            <Link
+              href={crumb.href}
+              className="inline-block align-middle hover:underline">
+              {capitalized(crumb.text)}
             </Link>
           </li>
+          {index < breadcrumbs.length - 1 ? (
+            <span className="inline-block align-middle">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                className="h-5 w-5">
+                <path
+                  fillRule="evenodd"
+                  d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </span>
+          ) : null}
         </>
       ))}
     </ul>
@@ -174,7 +196,7 @@ function Breadcrumbs() {
 
 function Layout({children}: {children: ComponentChildren}) {
   return (
-    <div className="flex  h-screen flex-col bg-gradient-to-b from-[#2e026d] to-[#15162c] px-4 pt-4 text-white">
+    <div className="flex h-screen flex-col bg-gradient-to-b from-[#2e026d] to-[#15162c] px-4 pt-4 text-white">
       <Navbar />
       <div className="my-8 flex flex-row justify-between">
         <Breadcrumbs />
