@@ -156,6 +156,18 @@ const Home: NextPage = () => {
           hasUnreadPosts: true
         }
       ]
+    },
+    {
+      title: 'Another Category',
+      subcategories: [
+        {
+          title: 'Lorem ipsum',
+          hasUnreadPosts: true,
+          description: 'Suculento rufian',
+          postsAmount: 0,
+          threadsAmount: 0
+        }
+      ]
     }
   ];
 
@@ -168,16 +180,29 @@ const Home: NextPage = () => {
       </Head>
       <Layout>
         {categories.map(category => (
-          <Category key={category.title} category={category}></Category>
+          <Category
+            className="mb-4"
+            key={category.title}
+            category={category}></Category>
         ))}
       </Layout>
     </>
   );
 };
 
-function Category({category}: {category: Category}) {
+function Category({
+  category,
+  className = ''
+}: {
+  category: Category;
+  className?: string;
+}) {
   return (
-    <Accordion.Root type="single" defaultValue="category" collapsible>
+    <Accordion.Root
+      type="single"
+      defaultValue="category"
+      collapsible
+      className={className}>
       <Accordion.Item value="category">
         <Accordion.Header className="text-md flex h-12 w-full flex-row bg-gray-900 px-4">
           <span className="mx-auto self-center text-xl font-bold">
