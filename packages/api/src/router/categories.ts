@@ -1,4 +1,4 @@
-import {router, publicProcedure, protectedProcedure} from '../trpc';
+import {publicProcedure, router} from '../trpc';
 import {z} from 'zod';
 
 type Category = {
@@ -92,5 +92,19 @@ export const categoriesRouter = router({
     }
 
     return allCategories;
-  })
+  }),
+  byHref: publicProcedure
+    .input(z.object({categoryHref: z.string().nonempty()}))
+    .query(({ctx, input}) => {
+      const {categoryHref} = input;
+      const category = allCategories.find(
+        category => category.href === categoryHref
+      );
+
+      if (!category) {
+        throw new Error(`${categoryHref} not found`);
+      }
+
+      return category;
+    })
 });

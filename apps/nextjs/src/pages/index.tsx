@@ -36,7 +36,7 @@ const Home: NextPage = () => {
   );
 };
 
-function Category({
+export function Category({
   category,
   className = ''
 }: {
