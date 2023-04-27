@@ -5,6 +5,7 @@ import * as Accordion from '@radix-ui/react-accordion';
 import React from 'react';
 import Layout from '../components/layout';
 import {RouterOutputs, trpc} from '../utils/trpc';
+
 export type ComponentChildren = string | JSX.Element | JSX.Element[];
 
 const Home: NextPage = () => {
@@ -71,7 +72,7 @@ export function Category({
           </Accordion.Trigger>
         </Accordion.Header>
         <Accordion.Content className="bg-[#ffffff1a] p-1">
-          {category.subcategories.map(subcategory => (
+          {category.children.map(subcategory => (
             <div
               key={subcategory.title}
               className="mb-0.5 w-full bg-gray-900 p-4">

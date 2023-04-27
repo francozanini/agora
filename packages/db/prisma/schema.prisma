@@ -2,16 +2,46 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "sqlite"
-    url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model Post {
-    id      String @id @default(cuid())
-    title   String
-    content String
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  authorId  String
+  Thread    Thread?  @relation(fields: [threadId], references: [id])
+  threadId  Int?
 }
+
+model Thread {
+  id         Int       @id @default(autoincrement())
+  title      String
+  href       String
+  description String @default("")
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  posts      Post[]
+  authorId   String
+  Subforum   Subforum? @relation(fields: [subforumId], references: [id])
+  subforumId Int?
+}
+
+model Subforum {
+  id       Int        @id @default(autoincrement())
+  title    String
+  description  String @default("")
+  href     String @unique
+  threads  Thread[]
+  children Subforum[] @relation("ParentSubforum")
+  parent   Subforum?  @relation("ParentSubforum", fields: [parentId], references: [id])
+  parentId Int?
+}
+
