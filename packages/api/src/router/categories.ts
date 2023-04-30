@@ -1,37 +1,33 @@
 import {publicProcedure, router} from '../trpc';
+import type {Category, Subforum} from 'prisma/prisma-client';
 import {z} from 'zod';
 
-type Subcategory = {
-  title: string;
-  description: string;
+type SubforumPresentation = Category & {
+  subforums: Subforum[];
   threadsAmount: number;
   postsAmount: number;
   hasUnreadPosts: boolean;
-  subforums?: {title: string}[];
-  href: string;
 };
 
 export const categoriesRouter = router({
-  forCurrentUser: publicProcedure.query(({ctx}) => {
+  forCurrentUser: publicProcedure.query(async ({ctx}) => {
     if (!ctx.auth.sessionId) {
-      return ctx.prisma.subforum.findMany({
-        where: {parent: null},
-        include: {children: true}
+      return await ctx.prisma.category.findMany({
+        include: {subforums: true}
       });
     }
 
-    return ctx.prisma.subforum.findMany({
-      where: {parent: null},
-      include: {children: true}
-    });
+    return (await ctx.prisma.category.findMany({
+      include: {subforums: true}
+    })) as SubforumPresentation[];
   }),
   byHref: publicProcedure
     .input(z.object({categoryHref: z.string().nonempty()}))
     .query(({ctx, input}) => {
       const {categoryHref} = input;
-      const category = ctx.prisma.subforum.findUnique({
+      const category = ctx.prisma.category.findUnique({
         where: {href: categoryHref},
-        include: {children: true}
+        include: {subforums: true}
       });
 
       if (!category) {

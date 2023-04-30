@@ -1,10 +1,14 @@
 import {router} from '../trpc';
 import {authRouter} from './auth';
 import {categoriesRouter} from './categories';
+import {subforumsRouter} from './subforums';
+import {threadsRouter} from './threads';
 
 export const appRouter = router({
   auth: authRouter,
-  categories: categoriesRouter
+  categories: categoriesRouter,
+  subforums: subforumsRouter,
+  threads: threadsRouter
 });
 
 // export type definition of API

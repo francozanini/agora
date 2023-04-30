@@ -72,28 +72,20 @@ export function Category({
           </Accordion.Trigger>
         </Accordion.Header>
         <Accordion.Content className="bg-[#ffffff1a] p-1">
-          {category.children.map(subcategory => (
-            <div
-              key={subcategory.title}
-              className="mb-0.5 w-full bg-gray-900 p-4">
+          {category.subforums.map(subforum => (
+            <div key={subforum.title} className="mb-0.5 w-full bg-gray-900 p-4">
               <Link
-                href={`/subcategory/${subcategory.title}`}
+                href={`/category/${subforum.href}`}
                 className="text-xl font-semibold">
-                {subcategory.title}
+                {subforum.title}
               </Link>
-              <p className="text-md">{subcategory.description}</p>
+              <p className="text-md">{subforum.description}</p>
               <ul className="flex flex-row gap-2">
                 <li className="text-xs">
-                  Threads:{' '}
-                  <span className=" font-semibold">
-                    {subcategory.threadsAmount}
-                  </span>
+                  Threads: <span className=" font-semibold">0</span>
                 </li>
                 <li className="text-xs">
-                  Posts:{' '}
-                  <span className=" font-semibold">
-                    {subcategory.postsAmount}
-                  </span>
+                  Posts: <span className=" font-semibold">0</span>
                 </li>
               </ul>
             </div>

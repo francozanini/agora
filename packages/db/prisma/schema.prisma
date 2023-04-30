@@ -43,5 +43,14 @@ model Subforum {
   children Subforum[] @relation("ParentSubforum")
   parent   Subforum?  @relation("ParentSubforum", fields: [parentId], references: [id])
   parentId Int?
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+}
+
+model Category {
+  id       Int        @id @default(autoincrement())
+  title    String
+  href     String @unique
+  subforums Subforum[]
 }
 
