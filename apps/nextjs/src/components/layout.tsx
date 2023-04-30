@@ -134,12 +134,12 @@ function Breadcrumbs() {
       // We can get the partial nested route for the crumb
       // by joining together the path parts up to this point.
       const href = '/' + asPathNestedRoutes.slice(0, idx + 1).join('/');
-      const text = subpath;
+      const text = subpath.replaceAll('-', ' ');
       return {href, text};
     });
 
     // Add in a default "Home" crumb for the top-level
-    return [{href: '/', text: 'Home'}, ...crumblist];
+    return [{href: '/', text: 'Home'}, ...crumblist.slice(1)];
   }
 
   // Call the function to generate the breadcrumbs list
