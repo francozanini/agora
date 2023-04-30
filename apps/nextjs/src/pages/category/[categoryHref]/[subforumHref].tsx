@@ -25,8 +25,8 @@ function SubforumList({subforums}: {subforums: Subforum}) {
 
 function Threads({threads}: {threads: Thread[]}) {
   return (
-    <Accordion.Root type="single" defaultValue="category" collapsible>
-      <Accordion.Item value="category">
+    <Accordion.Root type="single" defaultValue="single" collapsible>
+      <Accordion.Item value="single">
         <Accordion.Header className="text-md flex h-12 w-full flex-row bg-gray-900 px-4">
           <span className="mx-auto self-center text-xl font-bold">Threads</span>
           <Accordion.Trigger>
@@ -45,16 +45,23 @@ function Threads({threads}: {threads: Thread[]}) {
         </Accordion.Header>
         <Accordion.Content className="bg-[#ffffff1a] p-1">
           {threads.map(thread => (
-            <div key={thread.title} className="mb-0.5 w-full bg-gray-900 p-4">
+            <div
+              key={thread.title}
+              className="mb-0.5 flex w-full flex-col bg-gray-900 p-4">
               <Link
                 href={`/category/${thread.href}`}
-                className="text-xl font-semibold">
+                className="text-2xl font-semibold">
                 {thread.title}
               </Link>
-              <p className="text-md">{thread.description}</p>
-              <ul className="flex flex-row gap-2">
-                <li>Placeholder</li>
-              </ul>
+              <Link className="text-sm" href={`/profile/${thread.authorId}`}>
+                Last post by{' '}
+                <span className="font-semibold hover:underline">
+                  {thread.authorId}
+                </span>
+              </Link>
+              <div className="text-sm">
+                Replies: <span className="font-semibold">3</span>
+              </div>
             </div>
           ))}
         </Accordion.Content>
