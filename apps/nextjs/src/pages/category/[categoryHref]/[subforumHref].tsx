@@ -56,7 +56,7 @@ function Threads({threads}: {threads: Thread[]}) {
               <Link className="text-sm" href={`/profile/${thread.authorId}`}>
                 Last post by{' '}
                 <span className="font-semibold hover:underline">
-                  {thread.authorId}
+                  {thread.authorName}
                 </span>
               </Link>
               <div className="text-sm">
