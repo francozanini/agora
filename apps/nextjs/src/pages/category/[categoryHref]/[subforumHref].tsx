@@ -48,9 +48,7 @@ function Threads({threads}: {threads: Thread[]}) {
             <div
               key={thread.title}
               className="mb-0.5 flex w-full flex-col bg-gray-900 p-4">
-              <Link
-                href={`/category/${thread.href}`}
-                className="text-2xl font-semibold">
+              <Link href={thread.href} className="text-2xl font-semibold">
                 {thread.title}
               </Link>
               <Link className="text-sm" href={`/profile/${thread.authorId}`}>

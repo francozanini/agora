@@ -30,5 +30,18 @@ export const threadsRouter = router({
           }
         }
       });
-    })
+    }),
+  withPosts: publicProcedure
+    .input(
+      z.object({
+        href: z.string().nonempty()
+      })
+    )
+    .query(
+      async ({ctx, input}) =>
+        await ctx.prisma.thread.findFirstOrThrow({
+          where: {href: input.href},
+          include: {posts: true}
+        })
+    )
 });
