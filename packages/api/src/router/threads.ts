@@ -1,6 +1,6 @@
+import { clerkClient } from '@clerk/nextjs/server';
 import { z } from 'zod';
 import { publicProcedure, router } from '../trpc';
-
 export const threadsRouter = router({
   create: publicProcedure
     .input(
@@ -38,11 +38,22 @@ export const threadsRouter = router({
         href: z.string().nonempty()
       })
     )
-    .query(
-      async ({ ctx, input }) =>
-        await ctx.prisma.thread.findFirstOrThrow({
-          where: { href: input.href },
-          include: { posts: true }
-        })
-    )
+    .query(async ({ ctx, input }) => {
+      const retrievedThread = await ctx.prisma.thread.findFirstOrThrow({
+        where: { href: input.href },
+        include: { posts: true }
+      });
+
+      const users = await clerkClient.users.getUserList({
+        userId: retrievedThread.posts.map(post => post.authorId)
+      });
+
+      return {
+        ...retrievedThread,
+        posts: retrievedThread.posts.map(post => ({
+          ...post,
+          author: users.find(user => user.id === post.authorId)
+        }))
+      };
+    })
 });

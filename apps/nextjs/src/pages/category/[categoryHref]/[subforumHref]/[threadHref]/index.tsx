@@ -16,7 +16,7 @@ function Post({post}: {post: PostType}) {
         <Link
           href={`profile/${post.authorId}`}
           className="ml-1 font-bold hover:underline">
-          {post.authorId}
+          {post.author?.username}
         </Link>{' '}
         at {post.createdAt.toDateString()}
       </p>

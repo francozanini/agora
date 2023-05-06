@@ -9,14 +9,16 @@ export const postRouter = router({
         postContent: z.string().nonempty()
       })
     )
-    .mutation(async ({ctx, input}) => {
-      await ctx.prisma.post.create({
+    .mutation(async ({ ctx, input }) => {
+      const createdPost = await ctx.prisma.post.create({
         data: {
           title: 'delete this property in the future',
-          Thread: {connect: {id: input.threadId}},
+          Thread: { connect: { id: input.threadId } },
           content: input.postContent,
           authorId: ctx.auth.userId!
         }
       });
+
+      return { ...createdPost, author: ctx.auth.user };
     })
 });
