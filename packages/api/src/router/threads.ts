@@ -11,16 +11,16 @@ export const threadsRouter = router({
         subforumHref: z.string().nonempty()
       })
     )
-    .mutation(async ({input, ctx}) => {
+    .mutation(async ({ input, ctx }) => {
       if (!ctx.auth.userId) throw new Error('Must be authenticated');
-      const {categoryHref, subforumHref, title, content} = input;
+      const { categoryHref, subforumHref, title, content } = input;
 
       return await ctx.prisma.thread.create({
         data: {
           title: title,
           authorId: ctx.auth.userId,
           href: `/category/${categoryHref}/${subforumHref}/${title}`,
-          Subforum: {connect: {href: `${categoryHref}/${subforumHref}`}},
+          Subforum: { connect: { href: `${categoryHref}/${subforumHref}` } },
           posts: {
             create: {
               content: content,
@@ -29,7 +29,7 @@ export const threadsRouter = router({
             }
           }
         },
-        select: {href: true}
+        select: { href: true }
       });
     }),
   byHref: publicProcedure
@@ -39,10 +39,10 @@ export const threadsRouter = router({
       })
     )
     .query(
-      async ({ctx, input}) =>
+      async ({ ctx, input }) =>
         await ctx.prisma.thread.findFirstOrThrow({
-          where: {href: input.href},
-          include: {posts: true}
+          where: { href: input.href },
+          include: { posts: true }
         })
     )
 });
