@@ -1,4 +1,4 @@
-import { useAuth } from '@clerk/nextjs';
+import { useUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Layout from '../../../../../components/layout';
@@ -34,8 +34,8 @@ function ThreadPage() {
   } = trpc.threads.byHref.useQuery({
     href: `/category/${categoryHref}/${subforumHref}/${threadHref}`
   });
-  const {userId} = useAuth();
   const utils = trpc.useContext();
+  const {user: currentUser} = useUser();
   const {mutate: reply} = trpc.posts.reply.useMutation({
     onMutate: async function (newPost) {
       await utils.threads.byHref.cancel();
@@ -50,7 +50,8 @@ function ThreadPage() {
               {
                 content: newPost.postContent,
                 threadId: newPost.threadId,
-                authorId: userId,
+                author: currentUser,
+                authorId: currentUser?.id,
                 createdAt: new Date()
               } as PostType
             ]
