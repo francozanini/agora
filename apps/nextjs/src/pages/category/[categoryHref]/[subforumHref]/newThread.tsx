@@ -1,10 +1,13 @@
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
 import Layout from '../../../../components/layout';
-import {trpc} from '../../../../utils/trpc';
+import { trpc } from '../../../../utils/trpc';
 
 function CreateThreadPage() {
-  const {categoryHref, subforumHref} = useRouter().query;
-  const {mutate: createThread} = trpc.threads.create.useMutation();
+  const router = useRouter();
+  const {categoryHref, subforumHref} = router.query;
+  const {mutate: createThread} = trpc.threads.create.useMutation({
+    onSuccess: response => router.push(response.href)
+  });
 
   if (!categoryHref || !subforumHref) return <div>Thread not found</div>;
 
@@ -12,7 +15,7 @@ function CreateThreadPage() {
     <Layout>
       <form
         className="flex flex-col gap-4"
-        onSubmit={event => {
+        onSubmit={async event => {
           event.preventDefault();
           const target = event.target as typeof event.target & {
             title: {value: string};

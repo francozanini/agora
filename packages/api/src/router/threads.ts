@@ -1,5 +1,5 @@
-import {z} from 'zod';
-import {publicProcedure, router} from '../trpc';
+import { z } from 'zod';
+import { publicProcedure, router } from '../trpc';
 
 export const threadsRouter = router({
   create: publicProcedure
@@ -28,10 +28,11 @@ export const threadsRouter = router({
               authorId: ctx.auth.userId
             }
           }
-        }
+        },
+        select: {href: true}
       });
     }),
-  withPosts: publicProcedure
+  byHref: publicProcedure
     .input(
       z.object({
         href: z.string().nonempty()
