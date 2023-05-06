@@ -1,13 +1,12 @@
-import {useRouter} from 'next/router';
-import {RouterOutputs, trpc} from '../../../../../utils/trpc';
-import Layout from '../../../../../components/layout';
+import { useAuth } from '@clerk/nextjs';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import Layout from '../../../../../components/layout';
+import { RouterOutputs, trpc } from '../../../../../utils/trpc';
 
-function Post({
-  post
-}: {
-  post: RouterOutputs['threads']['withPosts']['posts'][number];
-}) {
+type PostType = RouterOutputs['threads']['byHref']['posts'][number];
+
+function Post({post}: {post: PostType}) {
   return (
     <div className="mx-1 my-4 w-full rounded-lg bg-gray-900 p-4">
       <p>{post.content}</p>
@@ -25,15 +24,42 @@ function Post({
   );
 }
 
-function Thread() {
+function ThreadPage() {
   const router = useRouter();
   const {categoryHref, subforumHref, threadHref} = router.query;
   const {
     data: thread,
     isLoading,
     isError
-  } = trpc.threads.withPosts.useQuery({
+  } = trpc.threads.byHref.useQuery({
     href: `/category/${categoryHref}/${subforumHref}/${threadHref}`
+  });
+  const {userId} = useAuth();
+  const utils = trpc.useContext();
+  const {mutate: reply} = trpc.posts.reply.useMutation({
+    onMutate: async function (newPost) {
+      await utils.threads.byHref.cancel();
+      const prevData = utils.threads.byHref.getData();
+      utils.threads.byHref.setData(
+        {href: `/category/${categoryHref}/${subforumHref}/${threadHref}`},
+        old => {
+          return {
+            ...old!,
+            posts: [
+              ...(old?.posts ?? []),
+              {
+                content: newPost.postContent,
+                threadId: newPost.threadId,
+                authorId: userId,
+                createdAt: new Date()
+              } as PostType
+            ]
+          };
+        }
+      );
+
+      return {prevData};
+    }
   });
 
   if (isError) return <div>Oh no!</div>;
@@ -47,8 +73,28 @@ function Thread() {
           <Post key={post.id} post={post}></Post>
         ))}
       </ul>
+      <form
+        className="mx-1 flex flex-col gap-4"
+        onSubmit={event => {
+          event.preventDefault();
+          const target = event.target as typeof event.target & {
+            content: {value: string};
+          };
+          reply({
+            threadId: thread.id,
+            postContent: target.content.value
+          });
+        }}>
+        <textarea
+          placeholder="Lorem Ipsum"
+          name="content"
+          className="inter text-md border-t3-purple-200/20 h-64 w-full rounded-md border px-2 py-2 text-black"></textarea>
+        <button className="h-8 bg-gray-900" type="submit">
+          Reply
+        </button>
+      </form>
     </Layout>
   );
 }
 
-export default Thread;
+export default ThreadPage;
