@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgres"
-  url      = "postgres://franco:rxZRfbqjMXWx17w8OTcoXzblqaBlzyZC@dpg-ch7cvfg2qv26p1cau0kg-a.ohio-postgres.render.com/agora_vrmj"
+  url = env("DATABASE_URL")
 }
 
 model Post {
