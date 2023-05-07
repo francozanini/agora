@@ -57,6 +57,10 @@ function cn(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
 }
 
+function systemTheme(): 'dark' | 'light' {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
 function ThemeButton() {
   const sunIcon = <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -86,14 +90,16 @@ function ThemeButton() {
     {name: 'System', icon: systemIcon},
   ] as const;
 
-  const [theme, setTheme] = useState(window.localStorage.getItem("theme") ||  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  const [theme, setTheme] = useState(window.localStorage.getItem("theme") ||  systemTheme());
 
     return (
    <DropdownMenu.Root>
     <DropdownMenu.Trigger asChild>
-        <button className="dark:hover:rounded dark:hover:bg-gray-900 focus:outline-none">
+        <button className="inline-block focus:outline-none">
+          <span className='inline-block align-middle text-sky-500'>
             {theme === 'light' && sunIcon}
             {theme === 'dark' && moonIcon}
+          </span>
         </button>
     </DropdownMenu.Trigger>
     <DropdownMenu.Portal>
@@ -111,7 +117,7 @@ function ThemeButton() {
                 document.documentElement.classList.remove('dark');
               }
             }
-            setTheme(newTheme);
+            setTheme(theme);
           }}>
           <span className={cn('inline-block align-middle mr-2', option.name.toLowerCase() === theme && 'text-sky-500')}>
           {option.icon}
