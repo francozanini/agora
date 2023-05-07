@@ -1,9 +1,8 @@
-import {RouterOutputs, trpc} from '../../../utils/trpc';
-import Layout from '../../../components/layout';
-import {useRouter} from 'next/router';
-import React from 'react';
 import * as Accordion from '@radix-ui/react-accordion';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import Layout from '../../../components/layout';
+import { RouterOutputs, trpc } from '../../../utils/trpc';
 
 type Subforum = RouterOutputs['subforums']['byHref']['children'];
 type Thread = RouterOutputs['subforums']['byHref']['threads'][number];
@@ -27,7 +26,7 @@ function Threads({threads}: {threads: Thread[]}) {
   return (
     <Accordion.Root type="single" defaultValue="single" collapsible>
       <Accordion.Item value="single">
-        <Accordion.Header className="text-md flex h-12 w-full flex-row bg-gray-900 px-4">
+        <Accordion.Header className="text-md flex h-12 w-full flex-row px-4 dark:bg-gray-900">
           <span className="mx-auto self-center text-xl font-bold">Threads</span>
           <Accordion.Trigger>
             <svg
@@ -47,7 +46,7 @@ function Threads({threads}: {threads: Thread[]}) {
           {threads.map(thread => (
             <div
               key={thread.title}
-              className="mb-0.5 flex w-full flex-col bg-gray-900 p-4">
+              className="mb-0.5 flex w-full flex-col p-4 dark:bg-gray-900">
               <Link href={thread.href} className="text-2xl font-semibold">
                 {thread.title}
               </Link>
@@ -68,7 +67,7 @@ function Threads({threads}: {threads: Thread[]}) {
   );
 }
 
-function CategoryPage() {
+export default function CategoryPage() {
   const router = useRouter();
   const {categoryHref, subforumHref} = router.query;
 
@@ -89,7 +88,7 @@ function CategoryPage() {
   return (
     <Layout>
       <Link
-        className="mb-4 inline-block bg-gray-900 p-3 text-sm"
+        className="mb-4 inline-block p-3 text-sm dark:bg-gray-900"
         href={`/category/${categoryHref}/${subforumHref}/newThread`}>
         <span className="inline-block align-middle">New Thread</span>
         <span className="ml-1 inline-block align-middle">
@@ -107,5 +106,3 @@ function CategoryPage() {
     </Layout>
   );
 }
-
-export default CategoryPage;

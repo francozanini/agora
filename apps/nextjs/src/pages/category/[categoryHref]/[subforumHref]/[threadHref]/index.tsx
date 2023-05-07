@@ -8,9 +8,9 @@ type PostType = RouterOutputs['threads']['byHref']['posts'][number];
 
 function Post({post}: {post: PostType}) {
   return (
-    <div className="mx-1 my-4 w-full rounded-lg bg-gray-900 p-4">
+    <div className="mx-1 my-4 w-full rounded-lg p-4 dark:bg-gray-900">
       <p>{post.content}</p>
-      <hr className="my-1 h-0.5 border-t-0 bg-gray-400 opacity-50" />
+      <hr className="my-1 h-0.5 border-t-0 opacity-50 dark:bg-gray-400" />
       <p className="text-xs">
         by
         <Link
@@ -89,7 +89,7 @@ function ThreadPage() {
         <textarea
           placeholder="Lorem Ipsum"
           name="content"
-          className="inter text-md border-t3-purple-200/20 h-64 w-full rounded-md border px-2 py-2 text-black"></textarea>
+          className="inter text-md dark:border-t3-purple-200/20 h-64 w-full rounded-md border px-2 py-2 text-black"></textarea>
         <button className="h-8 dark:bg-gray-900" type="submit">
           Reply
         </button>

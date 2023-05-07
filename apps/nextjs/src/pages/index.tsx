@@ -1,10 +1,9 @@
-import type {NextPage} from 'next';
+import * as Accordion from '@radix-ui/react-accordion';
+import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
-import * as Accordion from '@radix-ui/react-accordion';
-import React from 'react';
 import Layout from '../components/layout';
-import {RouterOutputs, trpc} from '../utils/trpc';
+import { RouterOutputs, trpc } from '../utils/trpc';
 
 export type ComponentChildren = string | JSX.Element | JSX.Element[];
 
@@ -51,7 +50,7 @@ export function Category({
       collapsible
       className={className}>
       <Accordion.Item value="category">
-        <Accordion.Header className="text-md flex h-12 w-full flex-row bg-gray-900 px-4">
+        <Accordion.Header className="text-md flex h-12 w-full flex-row px-4 dark:bg-gray-900">
           <Link
             href={`/category/${category.href}`}
             className="mx-auto self-center text-xl font-bold">
@@ -73,7 +72,9 @@ export function Category({
         </Accordion.Header>
         <Accordion.Content className="bg-[#ffffff1a] p-1">
           {category.subforums.map(subforum => (
-            <div key={subforum.title} className="mb-0.5 w-full bg-gray-900 p-4">
+            <div
+              key={subforum.title}
+              className="mb-0.5 w-full p-4 dark:bg-gray-900">
               <Link
                 href={`/category/${subforum.href}`}
                 className="text-xl font-semibold">
