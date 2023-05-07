@@ -195,7 +195,7 @@ function Breadcrumbs() {
 
 function Layout({children}: {children: ComponentChildren}) {
   return (
-    <div className="flex h-screen flex-col bg-gradient-to-b from-[#2e026d] to-[#15162c] px-4 pt-4 text-white">
+    <div className="flex h-full flex-col bg-gradient-to-b from-[#2e026d] to-[#15162c] px-4 pt-4 text-white">
       <Navbar />
       <div className="my-8 flex flex-row justify-between">
         <Breadcrumbs />
