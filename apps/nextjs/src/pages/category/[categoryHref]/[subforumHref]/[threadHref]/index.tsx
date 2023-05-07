@@ -90,7 +90,7 @@ function ThreadPage() {
           placeholder="Lorem Ipsum"
           name="content"
           className="inter text-md border-t3-purple-200/20 h-64 w-full rounded-md border px-2 py-2 text-black"></textarea>
-        <button className="h-8 bg-gray-900" type="submit">
+        <button className="h-8 dark:bg-gray-900" type="submit">
           Reply
         </button>
       </form>
