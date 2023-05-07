@@ -1,8 +1,7 @@
-import {useAuth, UserButton} from '@clerk/nextjs';
+import { useAuth, UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
-import {useRouter} from 'next/router';
-import React from 'react';
-import {ComponentChildren} from '../pages';
+import { useRouter } from 'next/router';
+import { ComponentChildren } from '../pages';
 
 function AuthButtons() {
   return (
@@ -134,7 +133,7 @@ function Breadcrumbs() {
       // We can get the partial nested route for the crumb
       // by joining together the path parts up to this point.
       const href = '/' + asPathNestedRoutes.slice(0, idx + 1).join('/');
-      const text = subpath.replaceAll('-', ' ');
+      const text = decodeURI(subpath).replaceAll('-', ' ');
       return {href, text};
     });
 
