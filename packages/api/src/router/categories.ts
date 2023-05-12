@@ -6,40 +6,85 @@ type Counts = {
   threadsAmount: number;
   postsAmount: number;
   hasUnreadPosts: boolean;
-}
+};
 
 type SubforumPresentation = Category & {
   subforums: (Subforum & Counts)[];
-  };
+};
 
-export const categoriesRouter = router({
-  forCurrentUser: publicProcedure.query(async ({ctx}): Promise<SubforumPresentation[]> => {
+const threadAndPostCount = {
+  subforums: {
+    include: {
+      threads: {include: {_count: {select: {posts: true}}}},
+      _count: {select: {threads: true}},
+    },
+  },
+};
+
+const forCurrentUser = publicProcedure.query(
+  async ({ctx}): Promise<SubforumPresentation[]> => {
     if (!ctx.auth.sessionId) {
-      return await ctx.prisma.category.findMany({
+      return (await ctx.prisma.category.findMany({
         include: {subforums: true},
-      }) as SubforumPresentation[];
+      })) as SubforumPresentation[];
     }
 
     const categoriesFromDb = await ctx.prisma.category.findMany({
-      include: { subforums: { include: { threads: {include: {_count: {select: {posts: true}}}}, _count: { select: { threads: true } } } }, },
+      include: threadAndPostCount,
     });
 
+    return categoriesFromDb.map(category =>
+      withStatistics(category),
+    ) as SubforumPresentation[];
+  },
+);
 
-    return categoriesFromDb.map(category => ({...category, subforums: category.subforums.map(subforum => ({...subforum, hasUnreadPosts: false, postsAmount: subforum.threads.reduce((acc, next) => acc + next._count.posts, 0), threadsAmount: subforum._count.threads}))})) as SubforumPresentation[];
-  }),
-  byHref: publicProcedure
-    .input(z.object({categoryHref: z.string().min(1)}))
-    .query(async ({ctx, input}): Promise<SubforumPresentation> => {
-      const {categoryHref} = input;
-      const category = await ctx.prisma.category.findUnique({
-        where: {href: categoryHref},
-        include: {subforums: {include: {_count: {select: {threads: true,}}}},},
-      });
+const byHref = publicProcedure
+  .input(z.object({categoryHref: z.string().min(1)}))
+  .query(async ({ctx, input}): Promise<SubforumPresentation> => {
+    const {categoryHref} = input;
 
-      if (!category) {
-        throw new Error(`${categoryHref} not found`);
-      }
+    const category = await ctx.prisma.category.findUnique({
+      where: {href: categoryHref},
+      include: threadAndPostCount,
+    });
 
-      return {...category, subforums: category.subforums.map(subforum => ({...subforum, hasUnreadPosts: false, threadsAmount: subforum._count.threads, postsAmount: 0}))};
-    }),
+    if (!category) {
+      throw new Error(`${categoryHref} not found`);
+    }
+
+    return withStatistics(category);
+  });
+
+export const categoriesRouter = router({
+  forCurrentUser,
+  byHref,
 });
+
+type SubforumAggregation = {
+  _count: {threads: number};
+  threads: {_count: {posts: number}}[];
+};
+
+function withStatistics(
+  category: Category & {subforums: (Subforum & SubforumAggregation)[]},
+): SubforumPresentation {
+  return {
+    ...category,
+    subforums: category.subforums.map(subforum => ({
+      ...subforum,
+      ...accumulateStatistics(subforum),
+    })),
+  };
+}
+
+function accumulateStatistics(subforum: SubforumAggregation) {
+  return {
+    hasUnreadPosts: false,
+    threadsAmount: subforum._count.threads,
+    postsAmount: subforum.threads.reduce(
+      (acc, next) => acc + next._count.posts,
+      0,
+    ),
+  };
+}
