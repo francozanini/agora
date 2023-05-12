@@ -33,9 +33,7 @@ const forCurrentUser = publicProcedure.query(
       include: threadAndPostCount,
     });
 
-    return categoriesFromDb.map(category =>
-      withStatistics(category),
-    ) as SubforumPresentation[];
+    return categoriesFromDb.map(category => withStatistics(category));
   },
 );
 
@@ -61,30 +59,24 @@ export const categoriesRouter = router({
   byHref,
 });
 
-type SubforumAggregation = {
-  _count: {threads: number};
-  threads: {_count: {posts: number}}[];
-};
-
 function withStatistics(
-  category: Category & {subforums: (Subforum & SubforumAggregation)[]},
+  category: Category & {
+    subforums: (Subforum & {
+      _count: {threads: number};
+      threads: {_count: {posts: number}}[];
+    })[];
+  },
 ): SubforumPresentation {
   return {
     ...category,
     subforums: category.subforums.map(subforum => ({
       ...subforum,
-      ...accumulateStatistics(subforum),
+      hasUnreadPosts: false,
+      threadsAmount: subforum._count.threads,
+      postsAmount: subforum.threads.reduce(
+        (acc, next) => acc + next._count.posts,
+        0,
+      ),
     })),
-  };
-}
-
-function accumulateStatistics(subforum: SubforumAggregation) {
-  return {
-    hasUnreadPosts: false,
-    threadsAmount: subforum._count.threads,
-    postsAmount: subforum.threads.reduce(
-      (acc, next) => acc + next._count.posts,
-      0,
-    ),
   };
 }
