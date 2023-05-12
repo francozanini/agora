@@ -28,6 +28,27 @@ async function seed() {
       },
     },
   });
+
+  await prisma.category.create({
+    data: {
+      title: "Rol",
+      href: "rol",
+      subforums: {
+        create: [
+          {
+            title: "Campaigns",
+            href: "campaigns",
+            description: "Advertise and join your next adventure",
+          },
+          {
+            title: "Characters",
+            href: "characters",
+            description: "Create your character",
+          },
+        ],
+      },
+    },
+  });
 }
 
 seed();
