@@ -135,6 +135,7 @@ function ThemeButton() {
         <DropdownMenu.Content className="dark:highlight-white/5 flex  h-auto w-auto flex-col gap-2 rounded-lg px-4 py-2 font-semibold ring-1 dark:bg-slate-800 dark:text-white dark:ring-0">
           {options.map(option => (
             <DropdownMenu.Item
+              key={option.name}
               className="inline-block hover:cursor-pointer hover:outline-none hover:dark:bg-gray-700"
               onClick={() => {
                 const newTheme = option.name.toLowerCase();

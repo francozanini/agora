@@ -1,4 +1,4 @@
-import { SignUp } from "@clerk/nextjs";
+import {SignUp} from "@clerk/nextjs";
 
 const SignUpPage = () => (
   <main className="flex h-screen flex-col items-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">

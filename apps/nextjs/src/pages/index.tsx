@@ -1,9 +1,9 @@
-import * as Accordion from '@radix-ui/react-accordion';
-import type { NextPage } from 'next';
-import Head from 'next/head';
-import Link from 'next/link';
-import Layout from '../components/layout';
-import { RouterOutputs, trpc } from '../utils/trpc';
+import * as Accordion from "@radix-ui/react-accordion";
+import type {NextPage} from "next";
+import Head from "next/head";
+import Link from "next/link";
+import Layout from "../components/layout";
+import {RouterOutputs, trpc} from "../utils/trpc";
 
 export type ComponentChildren = string | JSX.Element | JSX.Element[];
 
@@ -11,7 +11,7 @@ const Home: NextPage = () => {
   const {
     data: categories,
     isLoading,
-    isError
+    isError,
   } = trpc.categories.forCurrentUser.useQuery();
 
   if (isLoading) return <div>...Loading</div>;
@@ -38,9 +38,9 @@ const Home: NextPage = () => {
 
 export function Category({
   category,
-  className = ''
+  className = "",
 }: {
-  category: RouterOutputs['categories']['forCurrentUser'][number];
+  category: RouterOutputs["categories"]["forCurrentUser"][number];
   className?: string;
 }) {
   return (

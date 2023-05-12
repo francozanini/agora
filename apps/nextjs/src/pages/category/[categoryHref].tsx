@@ -1,7 +1,7 @@
-import {useRouter} from 'next/router';
-import Layout from '../../components/layout';
-import {trpc} from '../../utils/trpc';
-import {Category} from '../index';
+import {useRouter} from "next/router";
+import Layout from "../../components/layout";
+import {trpc} from "../../utils/trpc";
+import {Category} from "../index";
 
 function CategoryPage() {
   const router = useRouter();
@@ -12,7 +12,7 @@ function CategoryPage() {
   const {
     data: category,
     isLoading,
-    isError
+    isError,
   } = trpc.categories.byHref.useQuery({categoryHref: categoryHref as string});
 
   if (isError || !category) return <div>Error</div>;

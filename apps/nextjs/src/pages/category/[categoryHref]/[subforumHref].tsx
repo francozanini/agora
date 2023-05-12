@@ -1,11 +1,11 @@
-import * as Accordion from '@radix-ui/react-accordion';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import Layout from '../../../components/layout';
-import { RouterOutputs, trpc } from '../../../utils/trpc';
+import * as Accordion from "@radix-ui/react-accordion";
+import Link from "next/link";
+import {useRouter} from "next/router";
+import Layout from "../../../components/layout";
+import {RouterOutputs, trpc} from "../../../utils/trpc";
 
-type Subforum = RouterOutputs['subforums']['byHref']['children'];
-type Thread = RouterOutputs['subforums']['byHref']['threads'][number];
+type Subforum = RouterOutputs["subforums"]["byHref"]["children"];
+type Thread = RouterOutputs["subforums"]["byHref"]["threads"][number];
 
 function SubforumList({subforums}: {subforums: Subforum}) {
   if (!subforums.length) {
@@ -51,7 +51,7 @@ function Threads({threads}: {threads: Thread[]}) {
                 {thread.title}
               </Link>
               <Link className="text-sm" href={`/profile/${thread.authorId}`}>
-                Last post by{' '}
+                Last post by{" "}
                 <span className="font-semibold hover:underline">
                   {thread.authorName}
                 </span>
@@ -76,10 +76,10 @@ export default function CategoryPage() {
   const {
     data: subforum,
     isLoading,
-    isError
+    isError,
   } = trpc.subforums.byHref.useQuery({
     categoryHref: categoryHref as string,
-    subforumHref: subforumHref as string
+    subforumHref: subforumHref as string,
   });
 
   if (isError || !subforum) return <div>Error</div>;

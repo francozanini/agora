@@ -1,4 +1,4 @@
-import { ExpoConfig, ConfigContext } from "@expo/config";
+import {ExpoConfig, ConfigContext} from "@expo/config";
 
 const CLERK_PUBLISHABLE_KEY = "your-clerk-publishable-key";
 

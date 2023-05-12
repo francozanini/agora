@@ -1,6 +1,6 @@
-import {publicProcedure, router} from '../trpc';
-import type {Category, Subforum} from 'prisma/prisma-client';
-import {z} from 'zod';
+import {publicProcedure, router} from "../trpc";
+import type {Category, Subforum} from "prisma/prisma-client";
+import {z} from "zod";
 
 type SubforumPresentation = Category & {
   subforums: Subforum[];
@@ -13,12 +13,12 @@ export const categoriesRouter = router({
   forCurrentUser: publicProcedure.query(async ({ctx}) => {
     if (!ctx.auth.sessionId) {
       return await ctx.prisma.category.findMany({
-        include: {subforums: true}
+        include: {subforums: true},
       });
     }
 
     return (await ctx.prisma.category.findMany({
-      include: {subforums: true}
+      include: {subforums: true},
     })) as SubforumPresentation[];
   }),
   byHref: publicProcedure
@@ -27,7 +27,7 @@ export const categoriesRouter = router({
       const {categoryHref} = input;
       const category = ctx.prisma.category.findUnique({
         where: {href: categoryHref},
-        include: {subforums: true}
+        include: {subforums: true},
       });
 
       if (!category) {
@@ -35,5 +35,5 @@ export const categoriesRouter = router({
       }
 
       return category;
-    })
+    }),
 });
