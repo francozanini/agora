@@ -48,7 +48,7 @@ export function Category({
       type="single"
       defaultValue="category"
       collapsible
-      className={className}>
+      className={className + ' bg-white shadow-lg rounded-lg dark:bg-[#ffffff1a]'}>
       <Accordion.Item value="category">
         <Accordion.Header className="text-md flex h-12 w-full flex-row px-4 dark:bg-gray-900">
           <Link
@@ -70,11 +70,11 @@ export function Category({
             </svg>
           </Accordion.Trigger>
         </Accordion.Header>
-        <Accordion.Content className="bg-[#ffffff1a] p-1">
+        <Accordion.Content className="p-1">
           {category.subforums.map(subforum => (
             <div
               key={subforum.title}
-              className="mb-0.5 w-full p-4 dark:bg-gray-900">
+              className="mb-0.5 w-full p-4 bg-slate-100 rounded-lg dark:bg-gray-900">
               <Link
                 href={`/category/${subforum.href}`}
                 className="text-xl font-semibold">

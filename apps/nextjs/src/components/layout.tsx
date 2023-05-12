@@ -170,7 +170,7 @@ function ThemeButton() {
 function Navbar() {
   const {isSignedIn} = useAuth();
   return (
-    <nav className="flex justify-between border-b border-slate-900/10 bg-white px-4 py-4">
+    <nav className="flex justify-between border-b border-slate-900/10 bg-white px-4 py-4 dark:bg-gray-900">
       <button className="h-4 w-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"
