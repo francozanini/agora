@@ -1,10 +1,10 @@
-import { useUser } from '@clerk/nextjs';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import Layout from '../../../../../components/layout';
-import { RouterOutputs, trpc } from '../../../../../utils/trpc';
+import {useUser} from "@clerk/nextjs";
+import Link from "next/link";
+import {useRouter} from "next/router";
+import Layout from "../../../../../components/layout";
+import {RouterOutputs, trpc} from "../../../../../utils/trpc";
 
-type PostType = RouterOutputs['threads']['byHref']['posts'][number];
+type PostType = RouterOutputs["threads"]["byHref"]["posts"][number];
 
 function Post({post}: {post: PostType}) {
   return (
@@ -17,7 +17,7 @@ function Post({post}: {post: PostType}) {
           href={`profile/${post.authorId}`}
           className="ml-1 font-bold hover:underline">
           {post.author?.username}
-        </Link>{' '}
+        </Link>{" "}
         at {post.createdAt.toDateString()}
       </p>
     </div>
@@ -30,9 +30,9 @@ function ThreadPage() {
   const {
     data: thread,
     isLoading,
-    isError
+    isError,
   } = trpc.threads.byHref.useQuery({
-    href: `/category/${categoryHref}/${subforumHref}/${threadHref}`
+    href: `/category/${categoryHref}/${subforumHref}/${threadHref}`,
   });
   const utils = trpc.useContext();
   const {user: currentUser} = useUser();
@@ -52,15 +52,15 @@ function ThreadPage() {
                 threadId: newPost.threadId,
                 author: currentUser,
                 authorId: currentUser?.id,
-                createdAt: new Date()
-              } as PostType
-            ]
+                createdAt: new Date(),
+              } as PostType,
+            ],
           };
-        }
+        },
       );
 
       return {prevData};
-    }
+    },
   });
 
   if (isError) return <div>Oh no!</div>;
@@ -83,7 +83,7 @@ function ThreadPage() {
           };
           reply({
             threadId: thread.id,
-            postContent: target.content.value
+            postContent: target.content.value,
           });
         }}>
         <textarea

@@ -1,12 +1,12 @@
-import { useRouter } from 'next/router';
-import Layout from '../../../../components/layout';
-import { trpc } from '../../../../utils/trpc';
+import {useRouter} from "next/router";
+import Layout from "../../../../components/layout";
+import {trpc} from "../../../../utils/trpc";
 
 function CreateThreadPage() {
   const router = useRouter();
   const {categoryHref, subforumHref} = router.query;
   const {mutate: createThread} = trpc.threads.create.useMutation({
-    onSuccess: response => router.push(response.href)
+    onSuccess: response => router.push(response.href),
   });
 
   if (!categoryHref || !subforumHref) return <div>Thread not found</div>;
@@ -25,7 +25,7 @@ function CreateThreadPage() {
             categoryHref: categoryHref as string,
             subforumHref: subforumHref as string,
             title: target.title.value,
-            content: target.content.value
+            content: target.content.value,
           });
         }}>
         <input
