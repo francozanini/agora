@@ -26,11 +26,11 @@ function Threads({threads}: {threads: Thread[]}) {
   if(threads.length === 0) {
     return <p>No threads have been created yet.</p>
   }
-
+  // TODO: Maybe extract a component from here and category?
   return (
     <Accordion.Root type="single" defaultValue="single" collapsible>
-      <Accordion.Item value="single">
-        <Accordion.Header className="text-md flex h-12 w-full flex-row px-4 dark:bg-gray-900">
+      <Accordion.Item value="single" className="bg-white shadow-lg">
+        <Accordion.Header className="text-md flex h-12 w-full flex-row px-4  dark:bg-gray-900">
           <span className="mx-auto self-center text-xl font-bold">Threads</span>
           <Accordion.Trigger>
             <svg
@@ -50,7 +50,7 @@ function Threads({threads}: {threads: Thread[]}) {
           {threads.map(thread => (
             <div
               key={thread.title}
-              className="mb-0.5 flex w-full flex-col p-4 dark:bg-gray-900">
+              className="mb-0.5 bg-slate-200 rounded-lg flex w-full flex-col p-4 dark:bg-gray-900">
               <Link href={thread.href} className="text-2xl font-semibold">
                 {thread.title}
               </Link>
