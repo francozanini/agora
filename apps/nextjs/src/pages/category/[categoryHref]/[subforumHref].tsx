@@ -50,7 +50,7 @@ function Threads({threads}: {threads: Thread[]}) {
           {threads.map(thread => (
             <div
               key={thread.title}
-              className="mb-0.5 bg-slate-200 rounded-lg flex w-full flex-col p-4 dark:bg-gray-900">
+              className="mb-0.5 bg-slate-100 rounded-lg flex w-full flex-col p-4 dark:bg-gray-900">
               <Link href={thread.href} className="text-2xl font-semibold">
                 {thread.title}
               </Link>
