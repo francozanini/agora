@@ -3,7 +3,8 @@ import Link from "next/link";
 import {useRouter} from "next/router";
 import Layout from "../../../components/layout";
 import {RouterOutputs, trpc} from "../../../utils/trpc";
-import { Error, Loading, NotFound } from "../../../components/skeletons";
+import {Error, Loading, NotFound} from "../../../components/skeletons";
+import CollapsibleCard from "../../../components/collapsibleCard";
 
 type Subforum = RouterOutputs["subforums"]["byHref"]["children"];
 type Thread = RouterOutputs["subforums"]["byHref"]["threads"][number];
@@ -24,51 +25,36 @@ function SubforumList({subforums}: {subforums: Subforum}) {
 }
 
 function Threads({threads}: {threads: Thread[]}) {
-  if(threads.length === 0) {
-    return <p>No threads have been created yet.</p>
+  if (threads.length === 0) {
+    return <p>No threads have been created yet.</p>;
   }
-  // TODO: Maybe extract a component from here and category?
+
   return (
-    <Accordion.Root type="single" defaultValue="single" collapsible>
-      <Accordion.Item value="single" className="bg-white shadow-lg">
-        <Accordion.Header className="text-md flex h-12 w-full flex-row px-4  dark:bg-gray-900">
-          <span className="mx-auto self-center text-xl font-bold">Threads</span>
-          <Accordion.Trigger>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              className="h-5 w-5">
-              <path
-                fillRule="evenodd"
-                d="M4 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H4.75A.75.75 0 014 10z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </Accordion.Trigger>
-        </Accordion.Header>
-        <Accordion.Content className="bg-[#ffffff1a] p-1">
-          {threads.map(thread => (
-            <div
-              key={thread.title}
-              className="mb-0.5 bg-slate-100 rounded-lg flex w-full flex-col p-4 dark:bg-gray-900">
-              <Link href={thread.href} className="text-2xl font-semibold">
-                {thread.title}
-              </Link>
-              <Link className="text-sm" href={`/profile/${thread.authorId}`}>
-                Last post by{" "}
-                <span className="font-semibold hover:underline">
-                  {thread.authorName}
-                </span>
-              </Link>
-              <div className="text-sm">
-                Replies: <span className="font-semibold">{thread.replies}</span>
-              </div>
+    <CollapsibleCard>
+      <CollapsibleCard.CardHeader>
+        <span className="mx-auto self-center text-xl font-bold">Threads</span>
+      </CollapsibleCard.CardHeader>
+      <CollapsibleCard.CardContent>
+        {threads.map(thread => (
+          <div
+            key={thread.title}
+            className="mb-0.5 flex w-full flex-col rounded-lg bg-slate-100 p-4 dark:bg-gray-900">
+            <Link href={thread.href} className="text-2xl font-semibold">
+              {thread.title}
+            </Link>
+            <Link className="text-sm" href={`/profile/${thread.authorId}`}>
+              Last post by{" "}
+              <span className="font-semibold hover:underline">
+                {thread.authorName}
+              </span>
+            </Link>
+            <div className="text-sm">
+              Replies: <span className="font-semibold">{thread.replies}</span>
             </div>
-          ))}
-        </Accordion.Content>
-      </Accordion.Item>
-    </Accordion.Root>
+          </div>
+        ))}
+      </CollapsibleCard.CardContent>
+    </CollapsibleCard>
   );
 }
 
@@ -93,7 +79,7 @@ export default function CategoryPage() {
   return (
     <Layout>
       <Link
-        className="mb-4 inline-block p-2 text-sm rounded-lg text-white bg-primary dark:bg-gray-900"
+        className="bg-primary mb-4 inline-block rounded-lg p-2 text-sm text-white dark:bg-gray-900"
         href={`/category/${categoryHref}/${subforumHref}/newThread`}>
         <span className="inline-block align-middle">New Thread</span>
         <span className="ml-1 inline-block align-middle">

@@ -1,10 +1,11 @@
-import * as Accordion from "@radix-ui/react-accordion";
 import type {NextPage} from "next";
 import Head from "next/head";
 import Link from "next/link";
 import Layout from "../components/layout";
 import {RouterOutputs, trpc} from "../utils/trpc";
-import { Error, Loading } from "../components/skeletons";
+import {Error, Loading} from "../components/skeletons";
+import React from "react";
+import CollapsibleCard from "../components/collapsibleCard";
 
 export type ComponentChildren = string | JSX.Element | JSX.Element[];
 
@@ -45,56 +46,39 @@ export function Category({
   className?: string;
 }) {
   return (
-    <Accordion.Root
-      type="single"
-      defaultValue="category"
-      collapsible
-      className={className + ' bg-white shadow-lg rounded-lg dark:bg-[#ffffff1a]'}>
-      <Accordion.Item value="category">
-        <Accordion.Header className="text-md flex h-12 w-full flex-row px-4 dark:bg-gray-900">
-          <Link
-            href={`/category/${category.href}`}
-            className="mx-auto self-center text-xl font-bold">
-            {category.title}
-          </Link>
-          <Accordion.Trigger>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              className="h-5 w-5">
-              <path
-                fillRule="evenodd"
-                d="M4 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H4.75A.75.75 0 014 10z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </Accordion.Trigger>
-        </Accordion.Header>
-        <Accordion.Content className="p-1">
-          {category.subforums.map(subforum => (
-            <div
-              key={subforum.title}
-              className="mb-0.5 w-full p-4 bg-slate-100 rounded-lg dark:bg-gray-900">
-              <Link
-                href={`/category/${subforum.href}`}
-                className="text-xl font-semibold">
-                {subforum.title}
-              </Link>
-              <p className="text-md">{subforum.description}</p>
-              <ul className="flex flex-row gap-2">
-                <li className="text-xs">
-                  Threads: <span className=" font-semibold">{subforum.threadsAmount}</span>
-                </li>
-                <li className="text-xs">
-                  Posts: <span className=" font-semibold">{subforum.postsAmount}</span>
-                </li>
-              </ul>
-            </div>
-          ))}
-        </Accordion.Content>
-      </Accordion.Item>
-    </Accordion.Root>
+    <CollapsibleCard className={className}>
+      <CollapsibleCard.CardHeader>
+        <Link
+          href={`/category/${category.href}`}
+          className="mx-auto self-center text-xl font-bold">
+          {category.title}
+        </Link>
+      </CollapsibleCard.CardHeader>
+      <CollapsibleCard.CardContent>
+        {category.subforums.map(subforum => (
+          <div
+            key={subforum.title}
+            className="mb-0.5 w-full rounded-lg bg-slate-100 p-4 dark:bg-gray-900">
+            <Link
+              href={`/category/${subforum.href}`}
+              className="text-xl font-semibold">
+              {subforum.title}
+            </Link>
+            <p className="text-md">{subforum.description}</p>
+            <ul className="flex flex-row gap-2">
+              <li className="text-xs">
+                Threads:{" "}
+                <span className=" font-semibold">{subforum.threadsAmount}</span>
+              </li>
+              <li className="text-xs">
+                Posts:{" "}
+                <span className=" font-semibold">{subforum.postsAmount}</span>
+              </li>
+            </ul>
+          </div>
+        ))}
+      </CollapsibleCard.CardContent>
+    </CollapsibleCard>
   );
 }
 
