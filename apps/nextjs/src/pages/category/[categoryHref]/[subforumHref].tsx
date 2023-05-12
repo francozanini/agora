@@ -23,6 +23,10 @@ function SubforumList({subforums}: {subforums: Subforum}) {
 }
 
 function Threads({threads}: {threads: Thread[]}) {
+  if(threads.length === 0) {
+    return <p>No threads have been created yet.</p>
+  }
+
   return (
     <Accordion.Root type="single" defaultValue="single" collapsible>
       <Accordion.Item value="single">
