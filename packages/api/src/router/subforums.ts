@@ -17,7 +17,7 @@ export const subforumsRouter = router({
       const {categoryHref, subforumHref} = input;
       const subforum = await ctx.prisma.subforum.findFirstOrThrow({
         where: {href: `${categoryHref}/${subforumHref}`},
-        include: {children: true, threads: true},
+        include: {children: true, threads: {include: {_count: {select: {posts: true}}}}},
       });
 
       if (!subforum) {
@@ -28,8 +28,8 @@ export const subforumsRouter = router({
         ...subforum,
         threads: subforum.threads.map(thread => ({
           ...thread,
-          authorName: "Someguy",
-          replies: 4,
+          authorName: thread.authorId,
+          replies: thread._count.posts,
         })),
       };
     }),

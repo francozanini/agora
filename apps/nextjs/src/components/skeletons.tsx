@@ -5,3 +5,7 @@ export function Error() {
 export function Loading() {
   return <div>...Loading</div>
 }
+
+export function NotFound() {
+  return <div>Not found</div>
+}

@@ -3,7 +3,7 @@ import Link from "next/link";
 import {useRouter} from "next/router";
 import Layout from "../../../components/layout";
 import {RouterOutputs, trpc} from "../../../utils/trpc";
-import { Error, Loading } from "../../../components/skeletons";
+import { Error, Loading, NotFound } from "../../../components/skeletons";
 
 type Subforum = RouterOutputs["subforums"]["byHref"]["children"];
 type Thread = RouterOutputs["subforums"]["byHref"]["threads"][number];
@@ -62,7 +62,7 @@ function Threads({threads}: {threads: Thread[]}) {
                 </span>
               </Link>
               <div className="text-sm">
-                Replies: <span className="font-semibold">3</span>
+                Replies: <span className="font-semibold">{thread.replies}</span>
               </div>
             </div>
           ))}
@@ -76,7 +76,7 @@ export default function CategoryPage() {
   const router = useRouter();
   const {categoryHref, subforumHref} = router.query;
 
-  if (!categoryHref || !subforumHref) return <div>Not found</div>;
+  if (!categoryHref || !subforumHref) return <NotFound></NotFound>;
 
   const {
     data: subforum,
