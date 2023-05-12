@@ -84,10 +84,10 @@ export function Category({
               <p className="text-md">{subforum.description}</p>
               <ul className="flex flex-row gap-2">
                 <li className="text-xs">
-                  Threads: <span className=" font-semibold">0</span>
+                  Threads: <span className=" font-semibold">{subforum.threadsAmount}</span>
                 </li>
                 <li className="text-xs">
-                  Posts: <span className=" font-semibold">0</span>
+                  Posts: <span className=" font-semibold">{subforum.postsAmount}</span>
                 </li>
               </ul>
             </div>
