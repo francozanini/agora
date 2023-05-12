@@ -86,7 +86,7 @@ export default function CategoryPage() {
     subforumHref: subforumHref as string,
   });
 
-  if (isError || !subforum) return <div>Error</div>;
+  if (isError) return <div>Error</div>;
   if (isLoading) return <div>...Loading</div>;
 
   return (
