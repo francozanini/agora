@@ -28,7 +28,7 @@ export const categoriesRouter = router({
     return categoriesFromDb.map(category => ({...category, subforums: category.subforums.map(subforum => ({...subforum, hasUnreadPosts: false, postsAmount: subforum.threads.reduce((acc, next) => acc + next._count.posts, 0), threadsAmount: subforum._count.threads}))})) as SubforumPresentation[];
   }),
   byHref: publicProcedure
-    .input(z.object({categoryHref: z.string().nonempty()}))
+    .input(z.object({categoryHref: z.string().min(1)}))
     .query(async ({ctx, input}): Promise<SubforumPresentation> => {
       const {categoryHref} = input;
       const category = await ctx.prisma.category.findUnique({
