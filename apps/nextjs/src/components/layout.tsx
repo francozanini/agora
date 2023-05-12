@@ -132,12 +132,13 @@ function ThemeButton() {
         </button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
-        <DropdownMenu.Content className="dark:highlight-white/5 flex  h-auto w-auto flex-col gap-2 rounded-lg px-4 py-2 font-semibold ring-1 dark:bg-slate-800 dark:text-white dark:ring-0">
+        <DropdownMenu.Content className="bg-white dark:highlight-white/5 flex  h-auto w-auto flex-col rounded-lg font-semibold ring-1 dark:bg-slate-800 dark:text-white dark:ring-0">
           {options.map(option => (
             <DropdownMenu.Item
               key={option.name}
-              className="inline-block hover:cursor-pointer hover:outline-none hover:dark:bg-gray-700"
+              className="inline-block py-1 px-4 hover:bg-slate-100 hover:cursor-pointer hover:outline-none hover:dark:bg-gray-700"
               onClick={() => {
+                console.log(theme, option.name);
                 const newTheme = option.name.toLowerCase();
                 if (newTheme === "system") {
                   localStorage.removeItem("theme");
@@ -149,7 +150,7 @@ function ThemeButton() {
                     document.documentElement.classList.remove("dark");
                   }
                 }
-                setTheme(theme);
+                setTheme(newTheme);
               }}>
               <span
                 className={cn(
