@@ -10,9 +10,6 @@ module.exports = {
       "./packages/*/tsconfig.json",
     ],
   },
-  plugins: ["@typescript-eslint"],
-  extends: [
-    "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended",
-  ],
+  plugins: ["@typescript-eslint", "prettier"],
+  extends: ["plugin:@typescript-eslint/recommended", "prettier"],
 };
