@@ -7,7 +7,7 @@ module.exports = {
       colors: {
         default: "rgb(var(--color-default) / <alpha-value>)",
         neutral: "rgb(var(--color-neutral) / <alpha-value>)",
-        primary: "rgb(var(--color-primary) / <alpha-value>)",
+        primary: "#2c4f7c",
         secondary: "rgb(var(--color-secondary) / <alpha-value>)",
         accent: "rgb(var(--color-accent) / <alpha-value>)",
         warning: "rgb(var(--color-warning) / <alpha-value>)",

@@ -88,7 +88,7 @@ export default function CategoryPage() {
   return (
     <Layout>
       <Link
-        className="mb-4 inline-block p-3 text-sm dark:bg-gray-900"
+        className="mb-4 inline-block p-2 text-sm rounded-lg text-white bg-primary dark:bg-gray-900"
         href={`/category/${categoryHref}/${subforumHref}/newThread`}>
         <span className="inline-block align-middle">New Thread</span>
         <span className="ml-1 inline-block align-middle">
