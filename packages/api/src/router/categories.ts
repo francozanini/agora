@@ -21,6 +21,28 @@ const threadAndPostCount = {
   },
 };
 
+function withStatistics(
+  category: Category & {
+    subforums: (Subforum & {
+      _count: {threads: number};
+      threads: {_count: {posts: number}}[];
+    })[];
+  },
+): SubforumPresentation {
+  return {
+    ...category,
+    subforums: category.subforums.map(subforum => ({
+      ...subforum,
+      hasUnreadPosts: false,
+      threadsAmount: subforum._count.threads,
+      postsAmount: subforum.threads.reduce(
+        (acc, next) => acc + next._count.posts,
+        0,
+      ),
+    })),
+  };
+}
+
 const forCurrentUser = publicProcedure.query(
   async ({ctx}): Promise<SubforumPresentation[]> => {
     if (!ctx.auth.sessionId) {
@@ -58,25 +80,3 @@ export const categoriesRouter = router({
   forCurrentUser,
   byHref,
 });
-
-function withStatistics(
-  category: Category & {
-    subforums: (Subforum & {
-      _count: {threads: number};
-      threads: {_count: {posts: number}}[];
-    })[];
-  },
-): SubforumPresentation {
-  return {
-    ...category,
-    subforums: category.subforums.map(subforum => ({
-      ...subforum,
-      hasUnreadPosts: false,
-      threadsAmount: subforum._count.threads,
-      postsAmount: subforum.threads.reduce(
-        (acc, next) => acc + next._count.posts,
-        0,
-      ),
-    })),
-  };
-}
