@@ -1,6 +1,7 @@
 import {clerkClient} from "@clerk/nextjs/server";
 import {z} from "zod";
 import {publicProcedure, router} from "../trpc";
+
 export const threadsRouter = router({
   create: publicProcedure
     .input(
