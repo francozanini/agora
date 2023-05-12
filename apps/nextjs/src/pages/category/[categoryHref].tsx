@@ -2,6 +2,7 @@ import {useRouter} from "next/router";
 import Layout from "../../components/layout";
 import {trpc} from "../../utils/trpc";
 import {Category} from "../index";
+import { Error, Loading } from "../../components/skeletons";
 
 function CategoryPage() {
   const router = useRouter();
@@ -15,8 +16,8 @@ function CategoryPage() {
     isError,
   } = trpc.categories.byHref.useQuery({categoryHref: categoryHref as string});
 
-  if (isError || !category) return <div>Error</div>;
-  if (isLoading) return <div>...Loading</div>;
+  if (isError) return <Error></Error>;
+  if (isLoading || !category) return <Loading></Loading>;
 
   return (
     <Layout>

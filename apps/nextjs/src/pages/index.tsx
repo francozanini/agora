@@ -4,6 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Layout from "../components/layout";
 import {RouterOutputs, trpc} from "../utils/trpc";
+import { Error, Loading } from "../components/skeletons";
 
 export type ComponentChildren = string | JSX.Element | JSX.Element[];
 
@@ -14,8 +15,8 @@ const Home: NextPage = () => {
     isError,
   } = trpc.categories.forCurrentUser.useQuery();
 
-  if (isLoading) return <div>...Loading</div>;
-  if (isError) return <div>Oh shit</div>;
+  if (isLoading) return <Loading />;
+  if (isError) return <Error />;
 
   return (
     <>

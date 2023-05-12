@@ -3,6 +3,7 @@ import Link from "next/link";
 import {useRouter} from "next/router";
 import Layout from "../../../../../components/layout";
 import {RouterOutputs, trpc} from "../../../../../utils/trpc";
+import { Error, Loading } from "../../../../../components/skeletons";
 
 type PostType = RouterOutputs["threads"]["byHref"]["posts"][number];
 
@@ -63,8 +64,8 @@ function ThreadPage() {
     },
   });
 
-  if (isError) return <div>Oh no!</div>;
-  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <Error></Error>;
+  if (isLoading) return <Loading></Loading>;
 
   return (
     <Layout>

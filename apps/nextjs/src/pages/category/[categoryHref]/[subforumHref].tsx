@@ -3,6 +3,7 @@ import Link from "next/link";
 import {useRouter} from "next/router";
 import Layout from "../../../components/layout";
 import {RouterOutputs, trpc} from "../../../utils/trpc";
+import { Error, Loading } from "../../../components/skeletons";
 
 type Subforum = RouterOutputs["subforums"]["byHref"]["children"];
 type Thread = RouterOutputs["subforums"]["byHref"]["threads"][number];
@@ -86,8 +87,8 @@ export default function CategoryPage() {
     subforumHref: subforumHref as string,
   });
 
-  if (isError) return <div>Error</div>;
-  if (isLoading) return <div>...Loading</div>;
+  if (isError) return <Error></Error>;
+  if (isLoading) return <Loading></Loading>;
 
   return (
     <Layout>
