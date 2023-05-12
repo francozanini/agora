@@ -6,10 +6,10 @@ export const threadsRouter = router({
   create: publicProcedure
     .input(
       z.object({
-        title: z.string().nonempty(),
-        content: z.string().nonempty(),
-        categoryHref: z.string().nonempty(),
-        subforumHref: z.string().nonempty(),
+        title: z.string().min(1),
+        content: z.string().min(1),
+        categoryHref: z.string().min(1),
+        subforumHref: z.string().min(1),
       }),
     )
     .mutation(async ({input, ctx}) => {
@@ -36,7 +36,7 @@ export const threadsRouter = router({
   byHref: publicProcedure
     .input(
       z.object({
-        href: z.string().nonempty(),
+        href: z.string().min(1),
       }),
     )
     .query(async ({ctx, input}) => {

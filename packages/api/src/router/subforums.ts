@@ -10,8 +10,8 @@ export const subforumsRouter = router({
   byHref: publicProcedure
     .input(
       z.object({
-        categoryHref: z.string().nonempty(),
-        subforumHref: z.string().nonempty(),
+        categoryHref: z.string().min(1),
+        subforumHref: z.string().min(1),
       }),
     )
     .query(async ({ctx, input}): Promise<SubforumView> => {

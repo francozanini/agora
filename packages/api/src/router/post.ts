@@ -6,7 +6,7 @@ export const postRouter = router({
     .input(
       z.object({
         threadId: z.number().min(1),
-        postContent: z.string().nonempty(),
+        postContent: z.string().min(1),
       }),
     )
     .mutation(async ({ctx, input}) => {
