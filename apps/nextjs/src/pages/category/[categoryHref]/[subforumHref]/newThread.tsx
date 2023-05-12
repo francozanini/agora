@@ -32,13 +32,13 @@ function CreateThreadPage() {
           type="text"
           placeholder="Title"
           name="title"
-          className="inter text-md dark:border-t3-purple-200/20 h-8 w-full rounded-md px-2 py-2 text-black"
+          className="inter text-md shadow-lg dark:border-t3-purple-200/20 h-8 w-full rounded-md px-2 py-2 text-black outline-none"
         />
         <textarea
           placeholder="Lorem Ipsum"
           name="content"
-          className="inter text-md dark:border-t3-purple-200/20 h-64 w-full rounded-md border px-2 py-2 text-black"></textarea>
-        <button className="h-8 dark:bg-gray-900" type="submit">
+          className="inter text-md shadow-lg outline-none dark:border-t3-purple-200/20 h-64 w-full rounded-md border px-2 py-2 text-black"></textarea>
+        <button className="h-8 bg-primary text-white rounded-lg dark:bg-gray-900" type="submit">
           Post
         </button>
       </form>
