@@ -1,9 +1,7 @@
-import {useAuth, UserButton} from "@clerk/nextjs";
 import Link from "next/link";
 import {useRouter} from "next/router";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {ComponentChildren} from "../pages";
-import {systemTheme, cn} from "../utils/css";
 import Navbar from "./navbar";
 import {capitalized} from "../utils/strings";
 
