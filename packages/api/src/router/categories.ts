@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import {publicProcedure, router} from "../trpc";
 import type {Category, Subforum} from "prisma/prisma-client";
 import {z} from "zod";
@@ -70,7 +71,7 @@ const byHref = publicProcedure
     });
 
     if (!category) {
-      throw new Error(`${categoryHref} not found`);
+      throw new TRPCError({code: 'BAD_REQUEST', message: `${categoryHref} not found`}, );
     }
 
     return withStatistics(category);

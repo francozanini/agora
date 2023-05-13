@@ -1,9 +1,9 @@
 import {clerkClient} from "@clerk/nextjs/server";
 import {z} from "zod";
-import {publicProcedure, router} from "../trpc";
+import {protectedProcedure, publicProcedure, router} from "../trpc";
 
 export const threadsRouter = router({
-  create: publicProcedure
+  create: protectedProcedure
     .input(
       z.object({
         title: z.string().min(1),
@@ -13,7 +13,6 @@ export const threadsRouter = router({
       }),
     )
     .mutation(async ({input, ctx}) => {
-      if (!ctx.auth.userId) throw new Error("Must be authenticated");
       const {categoryHref, subforumHref, title, content} = input;
 
       return await ctx.prisma.thread.create({
