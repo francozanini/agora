@@ -2,6 +2,7 @@ import {Subforum, Thread} from "prisma/prisma-client";
 import {z} from "zod";
 import {publicProcedure, router} from "../trpc";
 import {clerkClient} from "@clerk/nextjs/server";
+import {TRPCError} from "@trpc/server";
 
 type ThreadPreview = Thread & {authorName: string; replies: number};
 type SubforumView = Subforum & {children: Subforum[]; threads: ThreadPreview[]};
@@ -25,7 +26,10 @@ export const subforumsRouter = router({
       });
 
       if (!subforum) {
-        throw new Error(`${categoryHref} not found`);
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: `${categoryHref} not found`,
+        });
       }
 
       const authors = await clerkClient.users.getUserList({
