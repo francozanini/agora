@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgres"
-  url      = env("DATABASE_URL")
+  url = env("DATABASE_URL")
 }
 
 model Post {
@@ -24,10 +24,10 @@ model Post {
 model Thread {
   id         Int       @id @default(autoincrement())
   title      String
-  href       String
-  description String @default("")
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  href       String     @unique
+  description String    @default("")
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
   posts      Post[]
   authorId   String
   Subforum   Subforum? @relation(fields: [subforumId], references: [id])
