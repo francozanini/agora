@@ -3,13 +3,13 @@ import Link from "next/link";
 import {useRouter} from "next/router";
 import Layout from "../../../../../components/layout";
 import {RouterOutputs, trpc} from "../../../../../utils/trpc";
-import { Error, Loading } from "../../../../../components/skeletons";
+import {Error, Loading} from "../../../../../components/skeletons";
 
 type PostType = RouterOutputs["threads"]["byHref"]["posts"][number];
 
 function Post({post}: {post: PostType}) {
   return (
-    <div className="mx-1 my-4 w-full rounded-lg p-4 bg-white shadow-lg dark:bg-gray-900">
+    <div className="mx-1 my-4 w-full rounded-lg bg-white p-4 shadow-lg dark:bg-gray-900">
       <p>{post.content}</p>
       <hr className="my-1 h-0.5 border-t-0 opacity-50 dark:bg-gray-400" />
       <p className="text-xs">
@@ -38,6 +38,9 @@ function ThreadPage() {
   const utils = trpc.useContext();
   const {user: currentUser} = useUser();
   const {mutate: reply} = trpc.posts.reply.useMutation({
+    onError: err => {
+      alert(err.message);
+    },
     onMutate: async function (newPost) {
       await utils.threads.byHref.cancel();
       const prevData = utils.threads.byHref.getData();
@@ -90,8 +93,10 @@ function ThreadPage() {
         <textarea
           placeholder="Lorem Ipsum"
           name="content"
-          className="inter shadow-lg text-md dark:bg-gray-900 outline-none border-0 h-64 w-full rounded-md border px-2 py-2"></textarea>
-        <button className="h-8 dark:bg-gray-900 bg-primary text-white" type="submit">
+          className="inter text-md h-64 w-full rounded-md border-0 px-2 py-2 shadow-lg outline-none dark:bg-gray-900" />
+        <button
+          className="bg-primary h-8 text-white dark:bg-gray-900"
+          type="submit">
           Reply
         </button>
       </form>
